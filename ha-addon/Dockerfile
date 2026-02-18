@@ -1,13 +1,14 @@
 FROM python:3.12-alpine
 
-RUN apk add --no-cache jq bash ffmpeg
+RUN apk add --no-cache git jq bash ffmpeg
+
+# Clona el código del bridge (upstream)
+RUN git clone --depth=1 https://github.com/metheos/anycubic-s1-mqtt-bridge.git /anycubic
 
 WORKDIR /anycubic
-COPY . /anycubic
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r /anycubic/requirements.txt
+COPY run.sh /run.sh
+RUN sed -i 's/\r$//' /run.sh && chmod +x /run.sh
 
-RUN sed -i 's/\r$//' /anycubic/ha-addon/anycubic_s1_mqtt_bridge/run.sh \
- && chmod +x /anycubic/ha-addon/anycubic_s1_mqtt_bridge/run.sh
-
-CMD ["bash", "/anycubic/ha-addon/anycubic_s1_mqtt_bridge/run.sh"]
+CMD ["bash", "/run.sh"]
