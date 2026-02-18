@@ -7,7 +7,7 @@ RUN git clone --depth=1 https://github.com/metheos/anycubic-s1-mqtt-bridge.git /
 WORKDIR /anycubic
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY run.sh /anycubic/run.sh
-RUN sed -i 's/\r$//' /anycubic/run.sh && chmod +x /anycubic/run.sh
+COPY run.sh /run.sh
+RUN sed -i 's/\r$//' /run.sh && chmod +x /run.sh
 
-CMD ["bash", "/anycubic/run.sh"]
+CMD ["bash", "/run.sh"]
