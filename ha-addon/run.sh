@@ -3,6 +3,14 @@ set -euo pipefail
 
 json_file="/data/options.json"
 
+# Si no existe, te lo deja clarísimo en logs
+if [ ! -f "$json_file" ]; then
+  echo "ERROR: No existe $json_file"
+  echo "Contenido de /data:"
+  ls -la /data || true
+  exit 1
+fi
+
 anycubic_ip="$(jq -r '.anycubic_ip' "$json_file")"
 mqtt_broker="$(jq -r '.mqtt_broker' "$json_file")"
 mqtt_port="$(jq -r '.mqtt_port' "$json_file")"
